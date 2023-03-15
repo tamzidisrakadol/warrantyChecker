@@ -2,7 +2,9 @@ package com.example.warrantychecker.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.view.WindowManager;
 
 import com.example.warrantychecker.R;
@@ -19,6 +21,12 @@ public class LogInActivity extends AppCompatActivity {
         activityLoginBinding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(activityLoginBinding.getRoot());
         getSupportActionBar().hide();
+
+
+        activityLoginBinding.logInBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(this,DashboardActivity.class);
+            startActivity(intent);
+        });
 
     }
 }

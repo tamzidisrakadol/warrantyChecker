@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/scanToAdd"
+        android:title="Scan To add"
+        android:icon="@drawable/scan"/>
+
+    <item android:id="@+id/aboutUs"
+        android:title="About Us"
+        android:icon="@drawable/info"/>
+
+</menu>

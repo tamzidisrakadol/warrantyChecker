@@ -117,10 +117,10 @@
 
 
             <Button
+                android:id="@+id/logInBtn"
                 android:layout_width="@dimen/_200sdp"
                 android:layout_height="@dimen/_35sdp"
                 android:layout_marginBottom="36dp"
-
                 android:text="Log in"
                 android:textSize="@dimen/_15sdp"
                 android:fontFamily="@font/fontstyle"
