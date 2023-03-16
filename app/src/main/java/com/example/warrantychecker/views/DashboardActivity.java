@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -32,7 +33,8 @@ public class DashboardActivity extends AppCompatActivity {
 
        binding.navDrawer.setNavigationItemSelectedListener(item -> {
            if (item.getItemId()==R.id.scanToAdd){
-               Toast.makeText(DashboardActivity.this, "Scan To Add", Toast.LENGTH_SHORT).show();
+               Intent intent = new Intent(this,ScanToAddBattery.class);
+               startActivity(intent);
            } else if (item.getItemId()==R.id.aboutUs) {
                Toast.makeText(DashboardActivity.this, "About us", Toast.LENGTH_SHORT).show();
            }

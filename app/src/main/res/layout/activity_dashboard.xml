@@ -44,7 +44,7 @@
             android:layout_height="@dimen/_150sdp"
             android:layout_marginTop="45dp"
             android:backgroundTint="@color/white"
-            app:cardCornerRadius="@dimen/_20sdp"
+            app:cardCornerRadius="@dimen/_10sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/view"
             app:layout_constraintTop_toBottomOf="@+id/textView2">
