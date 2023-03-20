@@ -1,25 +1,47 @@
 package com.example.warrantychecker.views;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.warrantychecker.databinding.ActivityScanToAddBatteryBinding;
 import com.example.warrantychecker.repository.CaptureAct;
+import com.example.warrantychecker.utility.Constants;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 public class ScanToAddBattery extends AppCompatActivity {
     ActivityScanToAddBatteryBinding binding;
     Boolean isScanBarcode = false;
     Boolean isDateChanged = false;
+    String barcodeValue;
+    String selectedDate;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +61,6 @@ public class ScanToAddBattery extends AppCompatActivity {
 
             if (isDataValid() && isScanBarcode && isDateChanged) {
                 register();
-                Toast.makeText(this, "register Successfully", Toast.LENGTH_SHORT).show();
             }else{
                 Toast.makeText(this, "Something is wrong", Toast.LENGTH_SHORT).show();
             }
@@ -63,10 +84,12 @@ public class ScanToAddBattery extends AppCompatActivity {
     ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
         if (result.getContents() != null) {
             binding.scanResultTv.setText(result.getContents());
+            barcodeValue = result.getContents();
             isScanBarcode = true;
         }
     });
 
+    //checking all the data are fine before upload
     private boolean isDataValid() {
         if (binding.companyNameET.getText().toString().isEmpty()) {
             binding.companyNameET.requestFocus();
@@ -90,6 +113,7 @@ public class ScanToAddBattery extends AppCompatActivity {
         return true;
     }
 
+    //selectDate
     private void pickUpDate(View view) {
         Calendar myCalendar = Calendar.getInstance();
         int year = myCalendar.get(Calendar.YEAR);
@@ -99,7 +123,7 @@ public class ScanToAddBattery extends AppCompatActivity {
         DatePickerDialog dpd = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String selectedDate = String.valueOf(year+"/"+(month+1)+"/"+dayOfMonth);
+                selectedDate = String.valueOf(year+"/"+(month+1)+"/"+dayOfMonth);
                 binding.selectDateTV.setText(selectedDate);
                 isDateChanged = true;
             }
@@ -107,8 +131,42 @@ public class ScanToAddBattery extends AppCompatActivity {
         dpd.show();
     }
 
-    private void register(){
 
+    //register retailer info with battery barcode
+    private void register(){
+        String companyName = binding.companyNameET.getText().toString();
+        String salesman = binding.salesManET.getText().toString();
+        String cityName = binding.cityNameEt.getText().toString();
+        String areaName = binding.cityNameEt.getText().toString();
+        String phone = binding.phoneNumberEt.getText().toString();
+        String panNumber = binding.panNumberET.getText().toString();
+
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.retailer_register_url, response -> {
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                Toast.makeText(ScanToAddBattery.this, "successful", Toast.LENGTH_SHORT).show();
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+        }, error -> Log.d("tag","error"+error)){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> map = new HashMap<>();
+                map.put("companyName",companyName);
+                map.put("salesMan",salesman);
+                map.put("cityName",cityName);
+                map.put("areaName",areaName);
+                map.put("phone",phone);
+                map.put("panNumber",panNumber);
+                map.put("sellingDate", selectedDate);
+                map.put("batteryBarcode",barcodeValue);
+                return map;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
     }
 
 
