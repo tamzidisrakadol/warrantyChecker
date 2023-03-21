@@ -14,25 +14,19 @@ import android.widget.Toast;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.warrantychecker.databinding.ActivityScanToAddBatteryBinding;
 import com.example.warrantychecker.repository.CaptureAct;
-import com.example.warrantychecker.utility.Constants;
+import com.example.warrantychecker.utility.Constraints;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 public class ScanToAddBattery extends AppCompatActivity {
@@ -142,7 +136,7 @@ public class ScanToAddBattery extends AppCompatActivity {
         String panNumber = binding.panNumberET.getText().toString();
 
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.retailer_register_url, response -> {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constraints.retailer_register_url, response -> {
             try {
                 JSONObject jsonObject = new JSONObject(response);
                 Toast.makeText(ScanToAddBattery.this, "successful", Toast.LENGTH_SHORT).show();

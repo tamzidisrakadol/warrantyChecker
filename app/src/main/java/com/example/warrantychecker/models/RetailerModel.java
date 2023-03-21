@@ -3,22 +3,22 @@ package com.example.warrantychecker.models;
 import java.util.Date;
 
 public class RetailerModel {
-    String companyName,salesManName,cityName,areaName,panNumber,batteryBarcode;
+    String companyName,salesManName,cityName,areaName,panNumber,batteryBarcode,sellingDate;
     int phoneNumber;
-    Date sellingDate;
+
 
     public RetailerModel() {
     }
 
-    public RetailerModel(String companyName, String salesManName, String cityName, String areaName, String panNumber, String batteryBarcode, int phoneNumber, Date sellingDate) {
+    public RetailerModel(String companyName, String salesManName, String cityName, String areaName, String panNumber, String batteryBarcode, String sellingDate, int phoneNumber) {
         this.companyName = companyName;
         this.salesManName = salesManName;
         this.cityName = cityName;
         this.areaName = areaName;
         this.panNumber = panNumber;
         this.batteryBarcode = batteryBarcode;
-        this.phoneNumber = phoneNumber;
         this.sellingDate = sellingDate;
+        this.phoneNumber = phoneNumber;
     }
 
     public String getCompanyName() {
@@ -69,19 +69,19 @@ public class RetailerModel {
         this.batteryBarcode = batteryBarcode;
     }
 
+    public String getSellingDate() {
+        return sellingDate;
+    }
+
+    public void setSellingDate(String sellingDate) {
+        this.sellingDate = sellingDate;
+    }
+
     public int getPhoneNumber() {
         return phoneNumber;
     }
 
     public void setPhoneNumber(int phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public Date getSellingDate() {
-        return sellingDate;
-    }
-
-    public void setSellingDate(Date sellingDate) {
-        this.sellingDate = sellingDate;
     }
 }

@@ -31,8 +31,9 @@ public class RetailerListAdapter extends RecyclerView.Adapter<RetailerListAdapte
     @Override
     public void onBindViewHolder(@NonNull Viewholder holder, int position) {
         RetailerModel retailerModel = retailerModelList.get(position);
+        String phoneNUmber = String.valueOf(retailerModel.getPhoneNumber());
         holder.retailerItemLayoutBinding.companyNameTV.setText(retailerModel.getCompanyName());
-        holder.retailerItemLayoutBinding.phoneNumberTV.setText(retailerModel.getPhoneNumber());
+        holder.retailerItemLayoutBinding.phoneNumberTV.setText(phoneNUmber);
         holder.retailerItemLayoutBinding.salesManNameTV.setText(retailerModel.getSalesManName());
 
     }
