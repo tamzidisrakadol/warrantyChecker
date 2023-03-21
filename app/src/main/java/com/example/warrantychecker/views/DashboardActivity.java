@@ -37,7 +37,10 @@ public class DashboardActivity extends AppCompatActivity {
                startActivity(intent);
            } else if (item.getItemId()==R.id.aboutUs) {
                Toast.makeText(DashboardActivity.this, "About us", Toast.LENGTH_SHORT).show();
+           } else if (item.getItemId()==R.id.retailerList) {
+               startActivity(new Intent(this,RetailerListActivity.class));
            }
+
            return true;
        });
 
