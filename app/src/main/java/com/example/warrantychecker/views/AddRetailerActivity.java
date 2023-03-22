@@ -77,7 +77,8 @@ public class AddRetailerActivity extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Constraints.retailer_register_url, response -> {
             try {
                 JSONObject jsonObject = new JSONObject(response);
-                Toast.makeText(this, "successful", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                finish();
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }

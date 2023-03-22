@@ -29,7 +29,7 @@ import java.util.List;
 public class RetailerListActivity extends AppCompatActivity {
     ActivityReatilerListBinding binding;
     RetailerListAdapter retailerListAdapter;
-    List<RetailerModel> retailerModelList=new ArrayList<>();
+    static List<RetailerModel> retailerModelList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,22 +37,22 @@ public class RetailerListActivity extends AppCompatActivity {
         binding = ActivityReatilerListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         binding.retailerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         binding.retailerRecyclerView.addItemDecoration(dividerItemDecoration);
-      //  showRetailerList();
+        showRetailerList();
 
     }
 
-    private void showRetailerList(){
+    private void showRetailerList() {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, Constraints.show_all_retailer_url, response -> {
             try {
-                JSONArray  jsonArray = new JSONArray(response);
-                for (int i=0;i<jsonArray.length();i++) {
+                JSONArray jsonArray = new JSONArray(response);
+                for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     RetailerModel retailerModel = new RetailerModel();
                     retailerModel.setCompanyName(jsonObject.getString("companyName"));
                     retailerModel.setSalesManName(jsonObject.getString("salesMan"));
-                    retailerModel.setPhoneNumber(Integer.parseInt(jsonObject.getString("phone")));
+                    retailerModel.setPhoneNumber(Long.parseLong(jsonObject.getString("phone")));
                     retailerModelList.add(retailerModel);
                 }
 
@@ -68,7 +68,6 @@ public class RetailerListActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
 
     }
-
 
 
 }
