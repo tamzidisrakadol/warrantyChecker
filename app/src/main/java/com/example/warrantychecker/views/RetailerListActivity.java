@@ -39,7 +39,7 @@ public class RetailerListActivity extends AppCompatActivity {
         binding.retailerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
         binding.retailerRecyclerView.addItemDecoration(dividerItemDecoration);
-        showRetailerList();
+      //  showRetailerList();
 
     }
 

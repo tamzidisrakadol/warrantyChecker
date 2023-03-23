@@ -5,13 +5,15 @@
         android:title="Scan To add"
         android:icon="@drawable/scan"/>
 
+    <item android:id="@+id/addRetailer"
+        android:title="Add Retailer"
+        android:icon="@drawable/plus"/>
+
+
     <item android:id="@+id/retailerList"
         android:title="List of Retailer"
         android:icon="@drawable/people"/>
 
-    <item android:id="@+id/aboutUs"
-        android:title="About Us"
-        android:icon="@drawable/info"/>
 
 
 </menu>

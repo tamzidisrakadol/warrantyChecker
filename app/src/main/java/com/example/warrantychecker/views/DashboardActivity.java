@@ -35,8 +35,8 @@ public class DashboardActivity extends AppCompatActivity {
            if (item.getItemId()==R.id.scanToAdd){
                Intent intent = new Intent(this,ScanToAddBattery.class);
                startActivity(intent);
-           } else if (item.getItemId()==R.id.aboutUs) {
-               Toast.makeText(DashboardActivity.this, "About us", Toast.LENGTH_SHORT).show();
+           } else if (item.getItemId()==R.id.addRetailer) {
+               startActivity(new Intent(this,AddRetailerActivity.class));
            } else if (item.getItemId()==R.id.retailerList) {
                startActivity(new Intent(this,RetailerListActivity.class));
            }
