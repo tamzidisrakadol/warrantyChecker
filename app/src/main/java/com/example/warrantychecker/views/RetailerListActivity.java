@@ -29,7 +29,7 @@ import java.util.List;
 public class RetailerListActivity extends AppCompatActivity {
     ActivityReatilerListBinding binding;
     RetailerListAdapter retailerListAdapter;
-    static List<RetailerModel> retailerModelList = new ArrayList<>();
+    List<RetailerModel> retailerModelList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +54,7 @@ public class RetailerListActivity extends AppCompatActivity {
                     retailerModel.setSalesManName(jsonObject.getString("salesMan"));
                     retailerModel.setPhoneNumber(Long.parseLong(jsonObject.getString("phone")));
                     retailerModelList.add(retailerModel);
+
                 }
 
             } catch (JSONException e) {
@@ -66,7 +67,6 @@ public class RetailerListActivity extends AppCompatActivity {
         });
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
-
     }
 
 
