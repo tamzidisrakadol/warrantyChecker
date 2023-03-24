@@ -1,6 +1,7 @@
 package com.example.warrantychecker.views;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -11,8 +12,11 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.warrantychecker.R;
@@ -29,15 +33,19 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class ScanToAddBattery extends AppCompatActivity {
     ActivityScanToAddBatteryBinding binding;
     Boolean isScanBarcode = false;
     Boolean isDateChanged = false;
+    Boolean isCompanyNameSelected = false;
     String barcodeValue;
     String selectedDate;
+    String selectedCompanyName;
     public static List<String> companyNameList = new ArrayList<>();
 
 
@@ -61,12 +69,17 @@ public class ScanToAddBattery extends AppCompatActivity {
 
         binding.registerBtn.setOnClickListener(v -> {
 
+            if (isScanBarcode && isDateChanged && isCompanyNameSelected){
+                register();
+            }
+
         });
 
         binding.autoCompleteText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String name = companyNameList.get(position);
+                selectedCompanyName = companyNameList.get(position);
+                isCompanyNameSelected = true;
             }
         });
 
@@ -91,8 +104,6 @@ public class ScanToAddBattery extends AppCompatActivity {
     });
 
 
-
-
     //selectDate
     private void pickUpDate(View view) {
         Calendar myCalendar = Calendar.getInstance();
@@ -112,7 +123,34 @@ public class ScanToAddBattery extends AppCompatActivity {
     }
 
     private void register(){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constraints.add_Battery_TO_DB, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    Toast.makeText(ScanToAddBattery.this, "Successful", Toast.LENGTH_SHORT).show();
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
 
+            }
+        }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> map = new HashMap<>();
+                map.put("batterybarcode",barcodeValue);
+                map.put("companyName",selectedCompanyName);
+                map.put("sellingDate",selectedDate);
+                return map;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
     }
 
 

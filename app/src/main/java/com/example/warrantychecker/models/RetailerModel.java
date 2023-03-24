@@ -3,6 +3,7 @@ package com.example.warrantychecker.models;
 import java.util.Date;
 
 public class RetailerModel {
+    int id;
     String companyName,salesManName,cityName,areaName,panNumber;
     Long phoneNumber;
 
@@ -11,7 +12,8 @@ public class RetailerModel {
 
     }
 
-    public RetailerModel(String companyName, String salesManName, String cityName, String areaName, String panNumber, Long phoneNumber) {
+    public RetailerModel(int id, String companyName, String salesManName, String cityName, String areaName, String panNumber, Long phoneNumber) {
+        this.id = id;
         this.companyName = companyName;
         this.salesManName = salesManName;
         this.cityName = cityName;
@@ -20,6 +22,13 @@ public class RetailerModel {
         this.phoneNumber = phoneNumber;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getCompanyName() {
         return companyName;
