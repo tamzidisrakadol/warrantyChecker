@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -18,7 +17,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.warrantychecker.R;
 import com.example.warrantychecker.adapter.OnItemClickListener;
 import com.example.warrantychecker.adapter.RetailerListAdapter;
 import com.example.warrantychecker.databinding.ActivityReatilerListBinding;
@@ -129,8 +127,5 @@ public class RetailerListActivity extends AppCompatActivity implements OnItemCli
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
-
-
 
 }

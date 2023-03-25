@@ -14,4 +14,8 @@
         android:title="Scan To add"
         android:icon="@drawable/scan"/>
 
+    <item android:id="@+id/batterySellingList"
+        android:title="Battery selling list"
+        android:icon="@drawable/baseline_format_list_numbered_24"/>
+
 </menu>
