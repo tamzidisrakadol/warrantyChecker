@@ -14,9 +14,11 @@ import java.util.List;
 
 public class SoldBatteryAdapter extends RecyclerView.Adapter<SoldBatteryAdapter.ViewHolder>{
     List<SoldBatteryModel> soldBatteryModelList;
+    DeleteItemClickListener deleteItemClickListener;
 
-    public SoldBatteryAdapter(List<SoldBatteryModel> soldBatteryModelList) {
+    public SoldBatteryAdapter(List<SoldBatteryModel> soldBatteryModelList, DeleteItemClickListener deleteItemClickListener) {
         this.soldBatteryModelList = soldBatteryModelList;
+        this.deleteItemClickListener = deleteItemClickListener;
     }
 
     @NonNull
@@ -33,6 +35,9 @@ public class SoldBatteryAdapter extends RecyclerView.Adapter<SoldBatteryAdapter.
         holder.batteryItemLayoutBinding.soldBatteryBarcode.setText(soldBatteryModel.getBatteryBarcode());
         holder.batteryItemLayoutBinding.soldBatteryCompanyName.setText(soldBatteryModel.getCompanyName());
         holder.batteryItemLayoutBinding.soldBatteryDateTV.setText(soldBatteryModel.getSoldDate());
+        holder.batteryItemLayoutBinding.soldBatteryDeleteBtn.setOnClickListener(v -> {
+            deleteItemClickListener.onItemDeleteClickListener(soldBatteryModel);
+        });
     }
 
     @Override
@@ -48,3 +53,4 @@ public class SoldBatteryAdapter extends RecyclerView.Adapter<SoldBatteryAdapter.
         }
     }
 }
+

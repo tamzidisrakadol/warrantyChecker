@@ -5,6 +5,8 @@ public class Constraints {
     public static final String show_all_retailer_url = "http://192.168.31.131/WarrantyChecker/v1/showAllUser.php";
     public static final String add_Battery_TO_DB = "http://192.168.31.131/WarrantyChecker/v1/addBattery.php";
     public static final String delete_Retailer = "http://192.168.31.131/WarrantyChecker/v1/deleteRetailer.php";
+    public static final String show_all_sold_battery = "http://192.168.31.131/WarrantyChecker/v1/showBatteryList.php";
+    public static final String delete_sold_battery = "http://192.168.31.131/WarrantyChecker/v1/delete_sold_battery.php";
 
 
 }
