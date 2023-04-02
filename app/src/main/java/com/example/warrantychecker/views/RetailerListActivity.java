@@ -36,7 +36,7 @@ public class RetailerListActivity extends AppCompatActivity implements OnItemCli
     ActivityReatilerListBinding binding;
     RetailerListAdapter retailerListAdapter;
     List<RetailerModel> retailerModelList = new ArrayList<>();
-    RetailerModel retailerModel= new RetailerModel();
+    RetailerModel retailerModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +57,7 @@ public class RetailerListActivity extends AppCompatActivity implements OnItemCli
                 retailerModelList.clear();
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    retailerModel= new RetailerModel();
                     retailerModel.setId(jsonObject.getInt("id"));
                     retailerModel.setCompanyName(jsonObject.getString("companyName"));
                     retailerModel.setSalesManName(jsonObject.getString("salesMan"));
