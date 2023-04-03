@@ -43,6 +43,7 @@ public class RetailerListActivity extends AppCompatActivity implements OnItemCli
         super.onCreate(savedInstanceState);
         binding = ActivityReatilerListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        getSupportActionBar().hide();
         binding.retailerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         binding.retailerRecyclerView.addItemDecoration(dividerItemDecoration);

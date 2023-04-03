@@ -2,6 +2,7 @@ package com.example.warrantychecker.views;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
@@ -41,8 +42,11 @@ public class BatterySoldList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityBatterySoldListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        getSupportActionBar().hide();
         showSoldBatteryList();
         binding.batterySellRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        binding.batterySellRecyclerView.addItemDecoration(dividerItemDecoration);
 
     }
 
