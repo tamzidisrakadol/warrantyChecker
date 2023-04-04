@@ -72,14 +72,16 @@
                         android:gravity="center"
                         android:textSize="18sp"
                         android:textColor="@color/black"/>
+
                     <TextView
+                        android:id="@+id/dashboardRetailerList"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="100"
                         android:layout_marginTop="10dp"
                         android:gravity="center"
-                        android:textSize="20sp"
-                        android:textColor="@color/black"/>
+                        android:text="100"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
 
 
                 </LinearLayout>
@@ -100,6 +102,7 @@
                         android:textSize="18dp"
                         android:textColor="@color/black"/>
                     <TextView
+                        android:id="@+id/dashboardBatteryList"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="100"
@@ -127,6 +130,7 @@
                         android:textSize="18sp"
                         android:textColor="@color/black"/>
                     <TextView
+                        android:id="@+id/dashboardBatteryWarrantyList"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="100"
