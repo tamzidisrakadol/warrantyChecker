@@ -67,6 +67,7 @@ public class BatterySoldList extends AppCompatActivity {
                         soldBatteryModel.setBatteryBarcode(jsonObject.getString("batterybarcode"));
                         soldBatteryModel.setCompanyName(jsonObject.getString("companyName"));
                         soldBatteryModel.setSoldDate(jsonObject.getString("sellingDate"));
+                        soldBatteryModel.setExpireDate(jsonObject.getString("ExpireDate"));
                         modelList.add(soldBatteryModel);
                         soldBatteryAdapter = new SoldBatteryAdapter(modelList, new DeleteItemClickListener() {
                             @Override
@@ -82,12 +83,7 @@ public class BatterySoldList extends AppCompatActivity {
                 binding.batterySellRecyclerView.setAdapter(soldBatteryAdapter);
                 soldBatteryAdapter.notifyDataSetChanged();
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("tag", "error" + error);
-            }
-        });
+        }, error -> Log.d("tag", "error" + error));
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }

@@ -7,7 +7,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="@dimen/_270sdp"
-        android:layout_height="@dimen/_90sdp"
+        android:layout_height="@dimen/_100sdp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="10dp"
         app:cardCornerRadius="@dimen/_10sdp"
@@ -75,25 +75,48 @@
                 android:id="@+id/soldBatteryDateTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 android:fontFamily="@font/fontstyle"
                 android:text="23-03-23"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/soldBatteryDeleteBtn" />
+                app:layout_constraintStart_toEndOf="@+id/imageView13"
+                app:layout_constraintTop_toBottomOf="@+id/soldBatteryCompanyName" />
 
             <ImageButton
                 android:id="@+id/soldBatteryDeleteBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
                 android:layout_marginEnd="16dp"
                 android:background="@android:color/transparent"
                 android:src="@drawable/delete"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/calendar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView8" />
+
+            <TextView
+                android:id="@+id/expireDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/fontstyle"
+                android:text="23-06-23"
+                android:textSize="@dimen/_13sdp"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/soldBatteryDeleteBtn" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

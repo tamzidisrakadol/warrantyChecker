@@ -2,17 +2,19 @@ package com.example.warrantychecker.models;
 
 public class SoldBatteryModel {
     int id;
-    String batteryBarcode,companyName,soldDate;
+    String batteryBarcode,companyName,soldDate,expireDate;
 
-    public SoldBatteryModel(int id, String batteryBarcode, String companyName, String soldDate) {
+    public SoldBatteryModel(int id, String batteryBarcode, String companyName, String soldDate, String expireDate) {
         this.id = id;
         this.batteryBarcode = batteryBarcode;
         this.companyName = companyName;
         this.soldDate = soldDate;
+        this.expireDate = expireDate;
     }
 
     public SoldBatteryModel() {
     }
+
 
     public int getId() {
         return id;
@@ -44,5 +46,13 @@ public class SoldBatteryModel {
 
     public void setSoldDate(String soldDate) {
         this.soldDate = soldDate;
+    }
+
+    public String getExpireDate() {
+        return expireDate;
+    }
+
+    public void setExpireDate(String expireDate) {
+        this.expireDate = expireDate;
     }
 }

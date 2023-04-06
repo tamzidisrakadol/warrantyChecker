@@ -44,7 +44,7 @@ public class ScanToAddBattery extends AppCompatActivity {
     Boolean isDateChanged = false;
     Boolean isCompanyNameSelected = false;
     String barcodeValue;
-    String selectedDate;
+    String selectedDate,expireDate;
     String selectedCompanyName;
     public static List<String> companyNameList = new ArrayList<>();
 
@@ -114,12 +114,20 @@ public class ScanToAddBattery extends AppCompatActivity {
         DatePickerDialog dpd = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                selectedDate = String.valueOf(year+"/"+(month+1)+"/"+dayOfMonth);
+                int exactMonth = month+1;
+                selectedDate = String.valueOf(year+"-"+exactMonth+"-"+dayOfMonth);
                 binding.selectDateTV.setText(selectedDate);
                 isDateChanged = true;
+                addExpireDate(year,exactMonth,dayOfMonth);
             }
         }, year, month, day);
         dpd.show();
+    }
+
+    //add expire date
+    private void addExpireDate(int year,int month,int dayOfMonth){
+        expireDate = String.valueOf(year+"-"+(month+3)+"-"+dayOfMonth);
+
     }
 
     private void register(){
@@ -129,15 +137,13 @@ public class ScanToAddBattery extends AppCompatActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     Toast.makeText(ScanToAddBattery.this, "Successful", Toast.LENGTH_SHORT).show();
+                    finish();
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+        }, error -> {
 
-            }
         }){
             @Nullable
             @Override
@@ -146,6 +152,7 @@ public class ScanToAddBattery extends AppCompatActivity {
                 map.put("batterybarcode",barcodeValue);
                 map.put("companyName",selectedCompanyName);
                 map.put("sellingDate",selectedDate);
+                map.put("ExpireDate",expireDate);
                 return map;
             }
         };
