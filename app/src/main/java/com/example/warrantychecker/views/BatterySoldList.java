@@ -42,7 +42,7 @@ public class BatterySoldList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityBatterySoldListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        getSupportActionBar().hide();
+        getSupportActionBar().setTitle("Battery");
         showSoldBatteryList();
         binding.batterySellRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
@@ -54,38 +54,31 @@ public class BatterySoldList extends AppCompatActivity {
 
     //showing all batteryList
     private void showSoldBatteryList() {
-//        StringRequest stringRequest = new StringRequest(Request.Method.GET, Constraints.show_all_sold_battery, new Response.Listener<String>() {
-//            @Override
-//            public void onResponse(String response) {
-//                try {
-//                    JSONArray jsonArray = new JSONArray(response);
-//                    modelList.clear();
-//                    for (int i = 0; i < jsonArray.length(); i++) {
-//                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-//                        soldBatteryModel = new SoldBatteryModel();
-//                        soldBatteryModel.setId(jsonObject.getInt("id"));
-//                        soldBatteryModel.setBatteryBarcode(jsonObject.getString("batterybarcode"));
-//                        soldBatteryModel.setCompanyName(jsonObject.getString("companyName"));
-//                        soldBatteryModel.setSoldDate(jsonObject.getString("sellingDate"));
-//                        soldBatteryModel.setExpireDate(jsonObject.getString("ExpireDate"));
-//                        modelList.add(soldBatteryModel);
-//                        soldBatteryAdapter = new SoldBatteryAdapter(modelList, new DeleteItemClickListener() {
-//                            @Override
-//                            public void onItemDeleteClickListener(SoldBatteryModel soldBatteryModel) {
-//                               deleteItem();
-//                            }
-//                        });
-//                    }
-//
-//                } catch (JSONException e) {
-//                    throw new RuntimeException(e);
-//                }
-//                binding.batterySellRecyclerView.setAdapter(soldBatteryAdapter);
-//                soldBatteryAdapter.notifyDataSetChanged();
-//            }
-//        }, error -> Log.d("tag", "error" + error));
-//        RequestQueue requestQueue = Volley.newRequestQueue(this);
-//        requestQueue.add(stringRequest);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, Constraints.WARRENTY, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray jsonArray = new JSONArray(response);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        int id=jsonObject.getInt("id");
+                        String retailer_id=jsonObject.getString("retailer_id");
+                        String sell_date=jsonObject.getString("sell_date");
+                        String product_id=jsonObject.getString("product_id");
+                        String seller=jsonObject.getString("seller");
+                        String end_time=jsonObject.getString("end_time");
+                        modelList.add(new SoldBatteryModel(id,retailer_id,sell_date,product_id,seller,end_time));
+                    }
+                    soldBatteryAdapter=new SoldBatteryAdapter(modelList);
+                    binding.batterySellRecyclerView.setAdapter(soldBatteryAdapter);
+
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }, error -> Log.d("tag", "error" + error));
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
     }
 
     //delete item from list

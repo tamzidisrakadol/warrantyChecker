@@ -19,9 +19,8 @@ public class SoldBatteryAdapter extends RecyclerView.Adapter<SoldBatteryAdapter.
     List<SoldBatteryModel> soldBatteryModelList;
     DeleteItemClickListener deleteItemClickListener;
 
-    public SoldBatteryAdapter(List<SoldBatteryModel> soldBatteryModelList, DeleteItemClickListener deleteItemClickListener) {
+    public SoldBatteryAdapter(List<SoldBatteryModel> soldBatteryModelList) {
         this.soldBatteryModelList = soldBatteryModelList;
-        this.deleteItemClickListener = deleteItemClickListener;
     }
 
     @NonNull
@@ -37,8 +36,8 @@ public class SoldBatteryAdapter extends RecyclerView.Adapter<SoldBatteryAdapter.
 
         SoldBatteryModel soldBatteryModel = soldBatteryModelList.get(position);
         Date currentDate = Calendar.getInstance().getTime();
-        String expireDate = soldBatteryModel.getExpireDate();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String expireDate = soldBatteryModel.getEnd_time();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         String formatCurrentDate = sdf.format(currentDate);
 
         try {
@@ -52,9 +51,9 @@ public class SoldBatteryAdapter extends RecyclerView.Adapter<SoldBatteryAdapter.
         }
 
 
-        holder.batteryItemLayoutBinding.soldBatteryBarcode.setText(soldBatteryModel.getBatteryBarcode());
-        holder.batteryItemLayoutBinding.soldBatteryCompanyName.setText(soldBatteryModel.getCompanyName());
-        holder.batteryItemLayoutBinding.soldBatteryDateTV.setText(soldBatteryModel.getSoldDate());
+        holder.batteryItemLayoutBinding.soldBatteryBarcode.setText(soldBatteryModel.getProduct_id());
+        holder.batteryItemLayoutBinding.soldBatteryCompanyName.setText(soldBatteryModel.getSeller());
+        holder.batteryItemLayoutBinding.soldBatteryDateTV.setText(soldBatteryModel.getSell_date());
 
 
         holder.batteryItemLayoutBinding.soldBatteryDeleteBtn.setOnClickListener(v -> {

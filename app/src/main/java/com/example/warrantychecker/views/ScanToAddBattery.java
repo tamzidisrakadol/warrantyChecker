@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +17,8 @@ import android.widget.Toast;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.warrantychecker.adapter.RetailerListAdapter;
@@ -39,11 +42,10 @@ import java.util.Map;
 public class ScanToAddBattery extends AppCompatActivity {
     ActivityScanToAddBatteryBinding binding;
     Boolean isScanBarcode = false;
-    Boolean isDateChanged = false;
+    ProgressDialog progressDialog;
     String barcodeValue;
     ArrayList<Vendor> vendor = new ArrayList<>();
     ArrayList<String> list = new ArrayList<>();
-    String selectedDate;
     String TAG = "MyTag";
 
     @Override
@@ -51,7 +53,10 @@ public class ScanToAddBattery extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityScanToAddBatteryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        getSupportActionBar().hide();
+        progressDialog=new ProgressDialog(ScanToAddBattery.this);
+        progressDialog.setTitle("Loading...");
+        progressDialog.setCancelable(false);
+        getSupportActionBar().setTitle("Add Product");
         getData();
         binding.scanBtn.setOnClickListener(v -> {
             scanBarcode();
@@ -60,16 +65,41 @@ public class ScanToAddBattery extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 int id=vendor.get(i).getId();
-                String code=binding.scanResultTv.getText().toString();
-                Toast.makeText(getApplicationContext(), ""+code, Toast.LENGTH_SHORT).show();
+                binding.add.setOnClickListener(v->{
+                    progressDialog.show();
+                    sendToServer(id,barcodeValue);
+                });
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
-
+    }
+    private void sendToServer(int id, String code) {
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, Constraints.ADD_BATTERY, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                progressDialog.dismiss();
+                Toast.makeText(ScanToAddBattery.this, ""+response, Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
+                Toast.makeText(ScanToAddBattery.this, ""+error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> hashMap=new HashMap<>();
+                hashMap.put("code",code);
+                hashMap.put("id",String.valueOf(id));
+                return hashMap;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
 
     }
 
@@ -123,13 +153,5 @@ public class ScanToAddBattery extends AppCompatActivity {
             isScanBarcode = true;
         }
     });
-
-    //checking all the data are fine before upload
-
-    //selectDa
-    //register retailer info with battery barcode
-
-
-
 
 }
