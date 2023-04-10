@@ -15,9 +15,11 @@ import java.util.List;
 
 public class RetailerListAdapter extends RecyclerView.Adapter<RetailerListAdapter.Viewholder> {
     List<RetailerModel> retailerModelList;
+    OnItemClickListener onItemClickListener;
 
     public RetailerListAdapter(List<RetailerModel> retailerModelList) {
         this.retailerModelList = retailerModelList;
+        this.onItemClickListener = onItemClickListener;
     }
 
     @NonNull
@@ -35,6 +37,17 @@ public class RetailerListAdapter extends RecyclerView.Adapter<RetailerListAdapte
         holder.retailerItemLayoutBinding.companyNameTV.setText(retailerModel.getCompanyName());
         holder.retailerItemLayoutBinding.phoneNumberTV.setText(phoneNUmber);
         holder.retailerItemLayoutBinding.salesManNameTV.setText(retailerModel.getSalesManName());
+        holder.retailerItemLayoutBinding.getRoot().setOnClickListener(v -> {
+            onItemClickListener.onItemClick(retailerModel);
+        });
+
+//        holder.retailerItemLayoutBinding.getRoot().setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                onItemClickListener.onItemLongClick(retailerModel);
+//                return true;
+//            }
+//        });
 
     }
 
