@@ -73,6 +73,7 @@
                         android:textSize="18sp"
                         android:textColor="@color/black"/>
                     <TextView
+                        android:id="@+id/totalRetailerTV"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="100"
@@ -100,6 +101,7 @@
                         android:textSize="18dp"
                         android:textColor="@color/black"/>
                     <TextView
+                        android:id="@+id/totalBatteryTV"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="100"
@@ -127,6 +129,7 @@
                         android:textSize="18sp"
                         android:textColor="@color/black"/>
                     <TextView
+                        android:id="@+id/totalOnWarrentyTV"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="100"

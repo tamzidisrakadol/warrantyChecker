@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -36,6 +37,8 @@ public class RetailerListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityReatilerListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        getSupportActionBar().setTitle("Retailers");
+        binding.retailerRecyclerView.setHasFixedSize(true);
         binding.retailerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
         binding.retailerRecyclerView.addItemDecoration(dividerItemDecoration);
@@ -44,23 +47,29 @@ public class RetailerListActivity extends AppCompatActivity {
     }
 
     private void showRetailerList(){
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, Constraints.show_all_retailer_url, response -> {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, Constraints.VENDOR, response -> {
             try {
                 JSONArray  jsonArray = new JSONArray(response);
                 for (int i=0;i<jsonArray.length();i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    RetailerModel retailerModel = new RetailerModel();
-                    retailerModel.setCompanyName(jsonObject.getString("companyName"));
-                    retailerModel.setSalesManName(jsonObject.getString("salesMan"));
-                    retailerModel.setPhoneNumber(Integer.parseInt(jsonObject.getString("phone")));
-                    retailerModelList.add(retailerModel);
-                }
 
+                    int id=jsonObject.getInt("id");
+                    String companyname=jsonObject.getString("Companyname");
+                    String salesMan=jsonObject.getString("SalesMan");
+                    String city=jsonObject.getString("City");
+                    String area=jsonObject.getString("Area");
+                    String phone=jsonObject.getString("Phone");
+                    String createDate=jsonObject.getString("createDate");
+
+                    retailerModelList.add(new RetailerModel(id,companyname,salesMan,city,area,phone,createDate));
+
+                }
+                retailerListAdapter = new RetailerListAdapter(retailerModelList);
+                binding.retailerRecyclerView.setAdapter(retailerListAdapter);
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
-            retailerListAdapter = new RetailerListAdapter(retailerModelList);
-            binding.retailerRecyclerView.setAdapter(retailerListAdapter);
+
         }, error -> {
 
         });

@@ -3,22 +3,28 @@ package com.example.warrantychecker.models;
 import java.util.Date;
 
 public class RetailerModel {
-    String companyName,salesManName,cityName,areaName,panNumber,batteryBarcode,sellingDate;
-    int phoneNumber;
+
+    int id;
+    String companyName,salesManName,cityName,areaName,phoneNumber,createdate;
 
 
-    public RetailerModel() {
-    }
 
-    public RetailerModel(String companyName, String salesManName, String cityName, String areaName, String panNumber, String batteryBarcode, String sellingDate, int phoneNumber) {
+    public RetailerModel(int id, String companyName, String salesManName, String cityName, String areaName, String phoneNumber,String createdate) {
+        this.id = id;
         this.companyName = companyName;
         this.salesManName = salesManName;
         this.cityName = cityName;
         this.areaName = areaName;
-        this.panNumber = panNumber;
-        this.batteryBarcode = batteryBarcode;
-        this.sellingDate = sellingDate;
         this.phoneNumber = phoneNumber;
+        this.createdate = createdate;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getCompanyName() {
@@ -53,35 +59,20 @@ public class RetailerModel {
         this.areaName = areaName;
     }
 
-    public String getPanNumber() {
-        return panNumber;
-    }
-
-    public void setPanNumber(String panNumber) {
-        this.panNumber = panNumber;
-    }
-
-    public String getBatteryBarcode() {
-        return batteryBarcode;
-    }
-
-    public void setBatteryBarcode(String batteryBarcode) {
-        this.batteryBarcode = batteryBarcode;
-    }
-
-    public String getSellingDate() {
-        return sellingDate;
-    }
-
-    public void setSellingDate(String sellingDate) {
-        this.sellingDate = sellingDate;
-    }
-
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+
+    public String getSellingDate() {
+        return createdate;
+    }
+
+    public void setSellingDate(String sellingDate) {
+        this.createdate = sellingDate;
     }
 }

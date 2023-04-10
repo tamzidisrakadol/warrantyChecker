@@ -8,6 +8,8 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
@@ -16,15 +18,20 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.warrantychecker.adapter.RetailerListAdapter;
 import com.example.warrantychecker.databinding.ActivityScanToAddBatteryBinding;
+import com.example.warrantychecker.models.RetailerModel;
+import com.example.warrantychecker.models.Vendor;
 import com.example.warrantychecker.repository.CaptureAct;
 import com.example.warrantychecker.utility.Constraints;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,8 +41,10 @@ public class ScanToAddBattery extends AppCompatActivity {
     Boolean isScanBarcode = false;
     Boolean isDateChanged = false;
     String barcodeValue;
+    ArrayList<Vendor> vendor = new ArrayList<>();
+    ArrayList<String> list = new ArrayList<>();
     String selectedDate;
-
+    String TAG = "MyTag";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,25 +52,57 @@ public class ScanToAddBattery extends AppCompatActivity {
         binding = ActivityScanToAddBatteryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         getSupportActionBar().hide();
+        getData();
         binding.scanBtn.setOnClickListener(v -> {
             scanBarcode();
         });
-
-        binding.selectDateTV.setOnClickListener(v -> {
-            pickUpDate(v);
-        });
-
-        binding.registerBtn.setOnClickListener(v -> {
-
-            if (isDataValid() && isScanBarcode && isDateChanged) {
-                register();
-            }else{
-                Toast.makeText(this, "Something is wrong", Toast.LENGTH_SHORT).show();
+        binding.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                int id=vendor.get(i).getId();
+                String code=binding.scanResultTv.getText().toString();
+                Toast.makeText(getApplicationContext(), ""+code, Toast.LENGTH_SHORT).show();
             }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
         });
 
 
+    }
+
+    private void getData() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, Constraints.VENDOR, response -> {
+            try {
+                JSONArray jsonArray = new JSONArray(response);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                    int id = jsonObject.getInt("id");
+                    String companyname = jsonObject.getString("Companyname");
+                    String salesMan = jsonObject.getString("SalesMan");
+                    String city = jsonObject.getString("City");
+                    String area = jsonObject.getString("Area");
+                    String phone = jsonObject.getString("Phone");
+                    String createDate = jsonObject.getString("createDate");
+                    vendor.add(new Vendor(id,companyname,salesMan,city,area,phone,createDate));
+                    list.add(companyname);
+                }
+                ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, list);
+                aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                binding.spinner.setAdapter(aa);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+
+        }, error -> {
+
+        });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
     }
 
 
@@ -84,56 +125,10 @@ public class ScanToAddBattery extends AppCompatActivity {
     });
 
     //checking all the data are fine before upload
-    private boolean isDataValid() {
-        if (binding.companyNameET.getText().toString().isEmpty()) {
-            binding.companyNameET.requestFocus();
-            return false;
-        } else if (binding.salesManET.getText().toString().isEmpty()) {
-            binding.salesManET.requestFocus();
-            return false;
-        } else if (binding.cityNameEt.getText().toString().isEmpty()) {
-            binding.cityNameEt.requestFocus();
-            return false;
-        } else if (binding.areaNameEt.getText().toString().isEmpty()) {
-            binding.areaNameEt.requestFocus();
-            return false;
-        } else if (binding.phoneNumberEt.getText().toString().isEmpty()) {
-            binding.phoneNumberEt.requestFocus();
-            return false;
-        } else if (binding.panNumberET.getText().toString().isEmpty()) {
-            binding.panNumberET.requestFocus();
-            return false;
-        }
-        return true;
-    }
 
-    //selectDate
-    private void pickUpDate(View view) {
-        Calendar myCalendar = Calendar.getInstance();
-        int year = myCalendar.get(Calendar.YEAR);
-        int month = myCalendar.get(Calendar.MONTH);
-        int day = myCalendar.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog dpd = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                selectedDate = String.valueOf(year+"/"+(month+1)+"/"+dayOfMonth);
-                binding.selectDateTV.setText(selectedDate);
-                isDateChanged = true;
-            }
-        }, year, month, day);
-        dpd.show();
-    }
-
-
+    //selectDa
     //register retailer info with battery barcode
-    private void register(){
-        String companyName = binding.companyNameET.getText().toString();
-        String salesman = binding.salesManET.getText().toString();
-        String cityName = binding.cityNameEt.getText().toString();
-        String areaName = binding.cityNameEt.getText().toString();
-        String phone = binding.phoneNumberEt.getText().toString();
-        String panNumber = binding.panNumberET.getText().toString();
+    private void register() {
 
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Constraints.retailer_register_url, response -> {
@@ -143,25 +138,28 @@ public class ScanToAddBattery extends AppCompatActivity {
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
-        }, error -> Log.d("tag","error"+error)){
-            @Nullable
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String,String> map = new HashMap<>();
-                map.put("companyName",companyName);
-                map.put("salesMan",salesman);
-                map.put("cityName",cityName);
-                map.put("areaName",areaName);
-                map.put("phone",phone);
-                map.put("panNumber",panNumber);
-                map.put("sellingDate", selectedDate);
-                map.put("batteryBarcode",barcodeValue);
-                return map;
-            }
+        }, error -> Log.d("tag", "error" + error)) {
+//            @Nullable
+//            @Override
+//            protected Map<String, String> getParams() throws AuthFailureError {
+//                HashMap<String,String> map = new HashMap<>();
+//                map.put("companyName",companyName);
+//                map.put("salesMan",salesman);
+//                map.put("cityName",cityName);
+//                map.put("areaName",areaName);
+//                map.put("phone",phone);
+//                map.put("panNumber",panNumber);
+//                map.put("sellingDate", selectedDate);
+//                map.put("batteryBarcode",barcodeValue);
+//                return map;
+//            }
+
+
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }
+
 
 
 }
