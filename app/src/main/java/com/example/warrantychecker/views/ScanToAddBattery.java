@@ -128,37 +128,7 @@ public class ScanToAddBattery extends AppCompatActivity {
 
     //selectDa
     //register retailer info with battery barcode
-    private void register() {
 
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constraints.retailer_register_url, response -> {
-            try {
-                JSONObject jsonObject = new JSONObject(response);
-                Toast.makeText(ScanToAddBattery.this, "successful", Toast.LENGTH_SHORT).show();
-            } catch (JSONException e) {
-                throw new RuntimeException(e);
-            }
-        }, error -> Log.d("tag", "error" + error)) {
-//            @Nullable
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//                HashMap<String,String> map = new HashMap<>();
-//                map.put("companyName",companyName);
-//                map.put("salesMan",salesman);
-//                map.put("cityName",cityName);
-//                map.put("areaName",areaName);
-//                map.put("phone",phone);
-//                map.put("panNumber",panNumber);
-//                map.put("sellingDate", selectedDate);
-//                map.put("batteryBarcode",barcodeValue);
-//                return map;
-//            }
-
-
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-    }
 
 
 
