@@ -8,6 +8,7 @@ public class Constraints {
     public static String BATTERY=BASE_URL+API.BATTERY;
     public static String ADD_BATTERY=BASE_URL+API.ADD_BATTERY;
     public static String WARRENTY=BASE_URL+API.WARRENTY;
+    public static String ADD_VENDOR=BASE_URL+API.ADD_VENDOR;
 
 
 }

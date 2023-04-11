@@ -17,7 +17,7 @@ public class RetailerListAdapter extends RecyclerView.Adapter<RetailerListAdapte
     List<RetailerModel> retailerModelList;
     OnItemClickListener onItemClickListener;
 
-    public RetailerListAdapter(List<RetailerModel> retailerModelList) {
+    public RetailerListAdapter(List<RetailerModel> retailerModelList, OnItemClickListener onItemClickListener) {
         this.retailerModelList = retailerModelList;
         this.onItemClickListener = onItemClickListener;
     }
@@ -40,14 +40,6 @@ public class RetailerListAdapter extends RecyclerView.Adapter<RetailerListAdapte
         holder.retailerItemLayoutBinding.getRoot().setOnClickListener(v -> {
             onItemClickListener.onItemClick(retailerModel);
         });
-
-//        holder.retailerItemLayoutBinding.getRoot().setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                onItemClickListener.onItemLongClick(retailerModel);
-//                return true;
-//            }
-//        });
 
     }
 

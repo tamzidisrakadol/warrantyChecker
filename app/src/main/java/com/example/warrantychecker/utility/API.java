@@ -6,4 +6,5 @@ public class API {
     public static final String BATTERY="battery.php";
     public static final String ADD_BATTERY="addbattery.php";
     public static final String WARRENTY="onwarrenty.php";
+    public static final String ADD_VENDOR="addvendor.php";
 }

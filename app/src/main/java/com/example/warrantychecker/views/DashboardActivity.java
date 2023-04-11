@@ -27,6 +27,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Objects;
+
 public class DashboardActivity extends AppCompatActivity {
 
     ActivityDashboardBinding binding;
@@ -40,7 +42,7 @@ public class DashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityDashboardBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        getSupportActionBar().setTitle("Dashboard");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Dashboard");
         toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, R.string.open, R.string.close);
         binding.drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
@@ -57,6 +59,8 @@ public class DashboardActivity extends AppCompatActivity {
                 startActivity(new Intent(this, RetailerListActivity.class));
             } else if (item.getItemId()==R.id.batterySellingList){
                 startActivity(new Intent(this, BatterySoldList.class));
+            }else if (item.getItemId()==R.id.addRetailer){
+                startActivity(new Intent(getApplicationContext(),AddRetailerActivity.class));
             }
 
             return true;

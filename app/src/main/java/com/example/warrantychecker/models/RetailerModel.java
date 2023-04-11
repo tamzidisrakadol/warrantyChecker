@@ -67,12 +67,11 @@ public class RetailerModel {
         this.phoneNumber = phoneNumber;
     }
 
-
-    public String getSellingDate() {
+    public String getCreatedate() {
         return createdate;
     }
 
-    public void setSellingDate(String sellingDate) {
-        this.createdate = sellingDate;
+    public void setCreatedate(String createdate) {
+        this.createdate = createdate;
     }
 }
