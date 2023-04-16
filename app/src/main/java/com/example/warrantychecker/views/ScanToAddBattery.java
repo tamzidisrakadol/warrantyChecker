@@ -5,13 +5,20 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -21,6 +28,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.warrantychecker.R;
 import com.example.warrantychecker.adapter.RetailerListAdapter;
 import com.example.warrantychecker.databinding.ActivityScanToAddBatteryBinding;
 import com.example.warrantychecker.models.RetailerModel;
@@ -44,6 +52,7 @@ public class ScanToAddBattery extends AppCompatActivity {
     Boolean isScanBarcode = false;
     ProgressDialog progressDialog;
     String barcodeValue;
+    Dialog dialog;
     ArrayList<Vendor> vendor = new ArrayList<>();
     ArrayList<String> list = new ArrayList<>();
     String TAG = "MyTag";
@@ -61,19 +70,71 @@ public class ScanToAddBattery extends AppCompatActivity {
         binding.scanBtn.setOnClickListener(v -> {
             scanBarcode();
         });
-        binding.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        binding.testView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                int id=vendor.get(i).getId();
-                binding.add.setOnClickListener(v->{
-                    progressDialog.show();
-                    sendToServer(id,barcodeValue);
+            public void onClick(View v) {
+                // Initialize dialog
+                dialog=new Dialog(ScanToAddBattery.this);
+
+                // set custom dialog
+                dialog.setContentView(R.layout.dialog_searchable_spinner);
+
+                // set custom height and width
+                dialog.getWindow().setLayout(650,800);
+
+                // set transparent background
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                // show dialog
+                dialog.show();
+
+                // Initialize and assign variable
+                EditText editText=dialog.findViewById(R.id.edit_text);
+                ListView listView=dialog.findViewById(R.id.list_view);
+
+                // Initialize array adapter
+                ArrayAdapter<String> adapter=new ArrayAdapter<>(ScanToAddBattery.this, android.R.layout.simple_list_item_1,list);
+
+                // set adapter
+                listView.setAdapter(adapter);
+                editText.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        adapter.getFilter().filter(s);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                });
+
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long idd) {
+                        // when item selected from list
+                        // set selected item on textView
+                        binding.testView.setText(adapter.getItem(position));
+                        int id=vendor.get(position).getId();
+                        binding.add.setOnClickListener(v->{
+                            progressDialog.show();
+                            sendToServer(id,barcodeValue);
+                        });
+
+
+
+                        // Dismiss dialog
+                        dialog.dismiss();
+                    }
                 });
             }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
         });
+
     }
     private void sendToServer(int id, String code) {
         StringRequest stringRequest=new StringRequest(Request.Method.POST, Constraints.ADD_BATTERY, new Response.Listener<String>() {
@@ -120,9 +181,9 @@ public class ScanToAddBattery extends AppCompatActivity {
                     vendor.add(new Vendor(id,companyname,salesMan,city,area,phone,createDate));
                     list.add(companyname);
                 }
-                ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, list);
-                aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                binding.spinner.setAdapter(aa);
+//                ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, list);
+//                aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                binding.spinner.setAdapter(aa);
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }

@@ -51,19 +51,18 @@
 
         </LinearLayout>
 
+
         <TextView
+            android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:textSize="18sp"
-            android:text="select company"/>
-
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:id="@+id/testView"
+            android:hint="Select Retailer"
+            android:padding="12dp"
+            android:gravity="center_vertical"
+            android:drawableEnd="@drawable/baseline_keyboard_arrow_down_24"
+            android:background="@android:drawable/editbox_background"
+            />
 
 
     </LinearLayout>
