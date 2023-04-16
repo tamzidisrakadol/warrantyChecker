@@ -59,8 +59,10 @@ public class DashboardActivity extends AppCompatActivity {
                 startActivity(new Intent(this, RetailerListActivity.class));
             } else if (item.getItemId()==R.id.batterySellingList){
                 startActivity(new Intent(this, BatterySoldList.class));
-            }else if (item.getItemId()==R.id.addRetailer){
-                startActivity(new Intent(getApplicationContext(),AddRetailerActivity.class));
+            }else if (item.getItemId()==R.id.addRetailer) {
+                startActivity(new Intent(getApplicationContext(), AddRetailerActivity.class));
+            }else if (item.getItemId()==R.id.report) {
+                startActivity(new Intent(getApplicationContext(), ReportActivity.class));
             }
 
             return true;

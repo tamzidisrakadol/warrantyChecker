@@ -9,6 +9,9 @@ public class Constraints {
     public static String ADD_BATTERY=BASE_URL+API.ADD_BATTERY;
     public static String WARRENTY=BASE_URL+API.WARRENTY;
     public static String ADD_VENDOR=BASE_URL+API.ADD_VENDOR;
+    public static String GET_MSG=BASE_URL+API.MSG;
+    public static String PROFILE=BASE_URL+API.PROFILE;
+
 
 
 }

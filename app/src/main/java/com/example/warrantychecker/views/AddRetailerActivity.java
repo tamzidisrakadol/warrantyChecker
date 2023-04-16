@@ -81,7 +81,7 @@ public class AddRetailerActivity extends AppCompatActivity {
         String companyName = binding.companyNameET.getText().toString();
         String salesman = binding.salesManET.getText().toString();
         String cityName = binding.cityNameEt.getText().toString();
-        String areaName = binding.cityNameEt.getText().toString();
+        String areaName = binding.areaNameEt.getText().toString();
         String phone = binding.phoneNumberEt.getText().toString();
         String panNumber = binding.panNumberET.getText().toString();
         String secondPhone = binding.secondPhone.getText().toString();
