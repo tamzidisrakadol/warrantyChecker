@@ -9,5 +9,6 @@ public class API {
     public static final String ADD_VENDOR="addvendor.php";
     public static final String MSG="getreport.php";
     public static final String PROFILE="getvendorprofile.php";
+    public static final String UPDATE_STATUS="updatestatus.php";
 
 }

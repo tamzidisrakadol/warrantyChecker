@@ -55,24 +55,29 @@ public class ReportActivity extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, Constraints.GET_MSG, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                try {
-                    JSONArray jsonArray = new JSONArray(response);
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        int id = jsonObject.getInt("id");
-                        String vendorID = jsonObject.getString("vendorid");
-                        String code = jsonObject.getString("batterycode");
-                        String date = jsonObject.getString("date");
-                        String report = jsonObject.getString("smg");
-                        reportModleArrayList.add(new ReportModle(id, vendorID, code, date, report));
-                    }
-                    reportAdapter = new ReportAdapter(getApplicationContext(), reportModleArrayList);
-                    binding.reportRecyclerView.setAdapter(reportAdapter);
-                    binding.reportRecyclerView.scrollToPosition(reportModleArrayList.size() - 1);
-                    reportAdapter.notifyDataSetChanged();
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
-                }
+               if (!response.equals("0")){
+                   try {
+                       JSONArray jsonArray = new JSONArray(response);
+                       for (int i = 0; i < jsonArray.length(); i++) {
+                           JSONObject jsonObject = jsonArray.getJSONObject(i);
+                           int id = jsonObject.getInt("id");
+                           String vendorID = jsonObject.getString("vendorid");
+                           String code = jsonObject.getString("batterycode");
+                           String date = jsonObject.getString("date");
+                           String report = jsonObject.getString("smg");
+                           String status = jsonObject.getString("status");
+                           reportModleArrayList.add(new ReportModle(id, vendorID, code, date, report,status));
+                       }
+                       reportAdapter = new ReportAdapter(getApplicationContext(), reportModleArrayList);
+                       binding.reportRecyclerView.setAdapter(reportAdapter);
+                       binding.reportRecyclerView.scrollToPosition(reportModleArrayList.size() - 1);
+                       reportAdapter.notifyDataSetChanged();
+                   } catch (JSONException e) {
+                       throw new RuntimeException(e);
+                   }
+               }else{
+                   Toast.makeText(ReportActivity.this, "Empty List !", Toast.LENGTH_SHORT).show();
+               }
             }
         }, new Response.ErrorListener() {
             @Override

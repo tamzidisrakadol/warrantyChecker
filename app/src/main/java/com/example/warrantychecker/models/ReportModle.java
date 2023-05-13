@@ -2,14 +2,15 @@ package com.example.warrantychecker.models;
 
 public class ReportModle {
     int id;
-    String vendorid,batterycode,date,smg;
+    String vendorid,batterycode,date,smg,status;
 
-    public ReportModle(int id, String vendorid, String batterycode, String date, String smg) {
+    public ReportModle(int id, String vendorid, String batterycode, String date, String smg, String status) {
         this.id = id;
         this.vendorid = vendorid;
         this.batterycode = batterycode;
         this.date = date;
         this.smg = smg;
+        this.status = status;
     }
 
     public int getId() {
@@ -50,5 +51,13 @@ public class ReportModle {
 
     public void setSmg(String smg) {
         this.smg = smg;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
