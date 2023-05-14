@@ -4,7 +4,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.graphics.Color;
@@ -16,7 +15,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -29,9 +27,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.warrantychecker.R;
-import com.example.warrantychecker.adapter.RetailerListAdapter;
 import com.example.warrantychecker.databinding.ActivityScanToAddBatteryBinding;
-import com.example.warrantychecker.models.RetailerModel;
 import com.example.warrantychecker.models.Vendor;
 import com.example.warrantychecker.repository.CaptureAct;
 import com.example.warrantychecker.utility.Constraints;
@@ -43,7 +39,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,6 +51,7 @@ public class ScanToAddBattery extends AppCompatActivity {
     ArrayList<Vendor> vendor = new ArrayList<>();
     ArrayList<String> list = new ArrayList<>();
     String TAG = "MyTag";
+    String manualBarcodeValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +66,9 @@ public class ScanToAddBattery extends AppCompatActivity {
         binding.scanBtn.setOnClickListener(v -> {
             scanBarcode();
         });
+
+
+
         binding.testView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,13 +119,20 @@ public class ScanToAddBattery extends AppCompatActivity {
                         // when item selected from list
                         // set selected item on textView
                         binding.testView.setText(adapter.getItem(position));
+
+
                         int id=vendor.get(position).getId();
+                        manualBarcodeValue = binding.scanResultTv.getText().toString();   //manual barcode
+
+
                         binding.add.setOnClickListener(v->{
-                            progressDialog.show();
-                            sendToServer(id,barcodeValue);
+                            if (isScanBarcode && barcodeValue.length()!=0){
+                                progressDialog.show();
+                                sendToServer(id,barcodeValue);
+                            }else if(!manualBarcodeValue.isEmpty()){
+                                sendToServer(id,manualBarcodeValue);
+                            }
                         });
-
-
 
                         // Dismiss dialog
                         dialog.dismiss();
@@ -148,6 +154,7 @@ public class ScanToAddBattery extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 progressDialog.dismiss();
                 Toast.makeText(ScanToAddBattery.this, ""+error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                Log.d("error",""+error.getLocalizedMessage());
             }
         }){
             @Nullable

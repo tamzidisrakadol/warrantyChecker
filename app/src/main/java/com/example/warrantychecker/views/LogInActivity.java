@@ -31,6 +31,7 @@ import java.util.Map;
 
 import io.paperdb.Paper;
 
+
 public class LogInActivity extends AppCompatActivity {
     ActivityLoginBinding binding;
     String TAG = "MyTag";
@@ -105,15 +106,7 @@ public class LogInActivity extends AppCompatActivity {
             RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
             requestQueue.add(stringRequest);
 
-
         });
-
-
-//        binding.logInBtn.setOnClickListener(v -> {
-//            Intent intent = new Intent(this, DashboardActivity.class);
-//            startActivity(intent);
-//        });
-
     }
 
     private void checkUser() {

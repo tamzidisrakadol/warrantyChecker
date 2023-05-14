@@ -45,7 +45,11 @@ public class SoldBatteryAdapter extends RecyclerView.Adapter<SoldBatteryAdapter.
             Date secondDate = sdf.parse(expireDate);
             Long difference = Math.abs(firstDate.getTime()-secondDate.getTime()) ;
             Long differenceToDay = difference/(24*60*60*1000);
-            holder.batteryItemLayoutBinding.expireDate.setText(differenceToDay+" days left");
+            if (differenceToDay >= 0){
+                holder.batteryItemLayoutBinding.expireDate.setText(differenceToDay+" days left");
+            }else{
+                holder.batteryItemLayoutBinding.expireDate.setText("0");
+            }
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
