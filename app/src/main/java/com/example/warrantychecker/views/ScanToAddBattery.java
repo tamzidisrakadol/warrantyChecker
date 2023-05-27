@@ -28,6 +28,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.warrantychecker.R;
 import com.example.warrantychecker.databinding.ActivityScanToAddBatteryBinding;
+import com.example.warrantychecker.models.ProductModel;
 import com.example.warrantychecker.models.Vendor;
 import com.example.warrantychecker.repository.CaptureAct;
 import com.example.warrantychecker.utility.Constraints;
@@ -46,6 +47,9 @@ public class ScanToAddBattery extends AppCompatActivity {
     ActivityScanToAddBatteryBinding binding;
     Boolean isScanBarcode = false;
     ProgressDialog progressDialog;
+    int id;
+
+    ArrayList<ProductModel> productModelArrayList=new ArrayList<>();
     String barcodeValue;
     Dialog dialog;
     ArrayList<Vendor> vendor = new ArrayList<>();
@@ -58,28 +62,31 @@ public class ScanToAddBattery extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityScanToAddBatteryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        progressDialog=new ProgressDialog(ScanToAddBattery.this);
+        progressDialog = new ProgressDialog(ScanToAddBattery.this);
         progressDialog.setTitle("Loading...");
         progressDialog.setCancelable(false);
         getSupportActionBar().setTitle("Add Product");
         getData();
         binding.scanBtn.setOnClickListener(v -> {
-            scanBarcode();
+            if (id != 0) {
+                scanBarcode();
+            } else {
+                Toast.makeText(this, "Please select Retailer Fast !", Toast.LENGTH_SHORT).show();
+            }
         });
-
 
 
         binding.testView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Initialize dialog
-                dialog=new Dialog(ScanToAddBattery.this);
+                dialog = new Dialog(ScanToAddBattery.this);
 
                 // set custom dialog
                 dialog.setContentView(R.layout.dialog_searchable_spinner);
 
                 // set custom height and width
-                dialog.getWindow().setLayout(650,800);
+                dialog.getWindow().setLayout(650, 800);
 
                 // set transparent background
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -88,11 +95,11 @@ public class ScanToAddBattery extends AppCompatActivity {
                 dialog.show();
 
                 // Initialize and assign variable
-                EditText editText=dialog.findViewById(R.id.edit_text);
-                ListView listView=dialog.findViewById(R.id.list_view);
+                EditText editText = dialog.findViewById(R.id.edit_text);
+                ListView listView = dialog.findViewById(R.id.list_view);
 
                 // Initialize array adapter
-                ArrayAdapter<String> adapter=new ArrayAdapter<>(ScanToAddBattery.this, android.R.layout.simple_list_item_1,list);
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(ScanToAddBattery.this, android.R.layout.simple_list_item_1, list);
 
                 // set adapter
                 listView.setAdapter(adapter);
@@ -119,18 +126,18 @@ public class ScanToAddBattery extends AppCompatActivity {
                         // when item selected from list
                         // set selected item on textView
                         binding.testView.setText(adapter.getItem(position));
-
-
-                        int id=vendor.get(position).getId();
-                        manualBarcodeValue = binding.scanResultTv.getText().toString();   //manual barcode
-
-
-                        binding.add.setOnClickListener(v->{
-                            if (isScanBarcode && barcodeValue.length()!=0){
+                        id = vendor.get(position).getId();
+                        //manualBarcodeValue = binding.scanResultTv.getText().toString();   //manual barcode
+                        binding.add.setOnClickListener(v -> {
+                            if (isScanBarcode && barcodeValue.length() != 0) {
                                 progressDialog.show();
-                                sendToServer(id,barcodeValue);
-                            }else if(!manualBarcodeValue.isEmpty()){
-                                sendToServer(id,manualBarcodeValue);
+//
+                                productModelArrayList.add(new ProductModel(id, barcodeValue));
+                                int size=productModelArrayList.size()-1;
+                                Log.d(TAG, "onItemClick: " + productModelArrayList.size());
+                                for (int i = 0; i < size; i++) {
+                                    sendToServer(id,barcodeValue);
+                                }
                             }
                         });
 
@@ -142,27 +149,28 @@ public class ScanToAddBattery extends AppCompatActivity {
         });
 
     }
+
     private void sendToServer(int id, String code) {
-        StringRequest stringRequest=new StringRequest(Request.Method.POST, Constraints.ADD_BATTERY, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constraints.ADD_BATTERY, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 progressDialog.dismiss();
-                Toast.makeText(ScanToAddBattery.this, ""+response, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ScanToAddBattery.this, "" + response, Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressDialog.dismiss();
-                Toast.makeText(ScanToAddBattery.this, ""+error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                Log.d("error",""+error.getLocalizedMessage());
+                Toast.makeText(ScanToAddBattery.this, "" + error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                Log.d("error", "" + error.getLocalizedMessage());
             }
-        }){
+        }) {
             @Nullable
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String,String> hashMap=new HashMap<>();
-                hashMap.put("code",code);
-                hashMap.put("id",String.valueOf(id));
+                HashMap<String, String> hashMap = new HashMap<>();
+                hashMap.put("code", code);
+                hashMap.put("id", String.valueOf(id));
                 return hashMap;
             }
         };
@@ -185,7 +193,7 @@ public class ScanToAddBattery extends AppCompatActivity {
                     String area = jsonObject.getString("Area");
                     String phone = jsonObject.getString("Phone");
                     String createDate = jsonObject.getString("createDate");
-                    vendor.add(new Vendor(id,companyname,salesMan,city,area,phone,createDate));
+                    vendor.add(new Vendor(id, companyname, salesMan, city, area, phone, createDate));
                     list.add(companyname);
                 }
 //                ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, list);
@@ -219,6 +227,8 @@ public class ScanToAddBattery extends AppCompatActivity {
             binding.scanResultTv.setText(result.getContents());
             barcodeValue = result.getContents();
             isScanBarcode = true;
+            productModelArrayList.add(new ProductModel(id, barcodeValue));
+            Toast.makeText(this, "Product Added on List !", Toast.LENGTH_SHORT).show();
         }
     });
 
